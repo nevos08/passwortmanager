@@ -19,47 +19,42 @@ enum USER_ROLE {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email    String   @unique
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
   firstName String
-  lastName String
-  password String
-  role USER_ROLE @default(USER)
-  items Item[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  lastName  String
+  password  String
+  role      USER_ROLE @default(USER)
+  items     Item[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model ItemType {
-  id Int @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   description String
-  items Item[]
+  hideInput   Boolean     @default(false)
   itemEntries ItemEntry[]
 }
 
 model Item {
-  id Int @id @default(autoincrement())
-  name String
-  url String?
-  type ItemType @relation(fields: [itemTypeId], references: [id])
-  itemTypeId Int
-  user User @relation(fields: [userId], references: [id])
-  userId Int
+  id          Int         @id @default(autoincrement())
+  name        String
+  url         String?
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   itemEntries ItemEntry[]
-  itemEntryid Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model ItemEntry {
-  id Int @default(autoincrement())
-  item Item @relation(fields: [itemId], references: [id])
-  itemId Int
-  itemType ItemType @relation(fields: [itemTypeId], references: [id])
+  id         Int      @id @default(autoincrement())
+  item       Item     @relation(fields: [itemId], references: [id])
+  itemId     Int
+  itemType   ItemType @relation(fields: [itemTypeId], references: [id])
   itemTypeId Int
-  value String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@id([id, itemId])
+  value      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

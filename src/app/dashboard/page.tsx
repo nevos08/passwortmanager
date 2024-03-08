@@ -9,7 +9,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { FaPlus } from "react-icons/fa6"
-import CreationForm from "./CreationForm"
+import CreationForm from "./(components)/CreationForm"
+
+export const dynamic = "force-dynamic"
 
 export default async function Dashboard() {
   return (
