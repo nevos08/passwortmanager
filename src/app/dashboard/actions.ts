@@ -9,6 +9,8 @@ export async function createItem(name: string, url: string, entries: Array<{ typ
   const session = await getServerSession(authOptions)
   if (!session || !session.user) return
 
+  console.log(session.user.id)
+
   try {
     const res = await prisma.item.create({
       data: {
@@ -19,23 +21,6 @@ export async function createItem(name: string, url: string, entries: Array<{ typ
         },
       },
     })
-
-    // const res = await prisma.item.create({
-    //   data: {
-    //     id: 0,
-    //     name: name,
-    //     url: url,
-    //     userId: Number(session.user.id),
-    //   },
-    // })
-    //
-    // await prisma.itemEntry.createMany({
-    //   data: entries.map((entry) => ({
-    //     value: entry.value,
-    //     itemTypeId: entry.type,
-    //     itemId: res.id,
-    //   })),
-    // })
   } catch (e) {
     if (e instanceof PrismaClientValidationError) {
       console.log(e)
