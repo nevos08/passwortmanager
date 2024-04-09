@@ -1,9 +1,12 @@
 import { getServerSession } from "next-auth"
 import LogoutButton from "@/components/LogoutButton"
 import { authOptions } from "../api/auth/[...nextauth]/options"
-import ThemeSwitcher from "@/components/ThemeSwitcher"
+// import ThemeSwitcher from "@/components/ThemeSwitcher"
 import { IoMdSettings } from "react-icons/io"
 import { Button } from "@/components/ui/button"
+import dynamic from "next/dynamic"
+
+const ThemeSwitcher = dynamic(() => import("@/components/ThemeSwitcher"), { ssr: false })
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions)

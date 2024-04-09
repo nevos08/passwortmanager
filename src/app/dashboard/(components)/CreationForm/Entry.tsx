@@ -3,9 +3,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { BsStars } from "react-icons/bs"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import GeneratePasswordPopover from "@/app/dashboard/(components)/GeneratePasswordPopover"
+import { FaXmark } from "react-icons/fa6"
 
 type CreationFormEntryProps = {
   index: number
@@ -15,6 +15,7 @@ type CreationFormEntryProps = {
   onBlur: (e: FocusEvent<HTMLInputElement>, index: number) => void
   onTypeChange: (index: number, typeId: number) => void
   onValueChange: (index: number, value: string) => void
+  onRemove: () => void
 }
 
 export default function CreationFormEntry({
@@ -25,6 +26,7 @@ export default function CreationFormEntry({
   onFocus,
   onTypeChange,
   onValueChange,
+  onRemove,
 }: CreationFormEntryProps) {
   const isPassword = (): boolean => {
     return types.find((x) => x.id == entry.type)?.hideInput || false
@@ -38,11 +40,19 @@ export default function CreationFormEntry({
         key={`entry-${index}`}
         className={"mt-2 flex items-center justify-between gap-2"}
       >
+        <Button
+          size="icon"
+          variant="secondary"
+          className="shrink-0"
+          onClick={onRemove}
+        >
+          <FaXmark />
+        </Button>
         <Select
           defaultValue={types.find((x) => x.id == entry.type)?.description}
           onValueChange={(value) => onTypeChange(index, types.find((x) => x.description == value)?.id || 0)}
         >
-          <SelectTrigger className={"w-[40%] bg-secondary transition-all hover:shadow-md"}>
+          <SelectTrigger className={"shrink-0  basis-[30%] bg-secondary transition-all hover:shadow-md"}>
             <SelectValue
               placeholder={"Typ"}
               defaultValue={types[0].description}

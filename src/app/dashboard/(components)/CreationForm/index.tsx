@@ -9,9 +9,11 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { FaPlus } from "react-icons/fa6"
 import { FocusEvent } from "react"
-import CreationFormEntry from "@/app/dashboard/(components)/CreationFormEntry"
+import Entry from "@/app/dashboard/(components)/CreationForm/Entry"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { createItem } from "@/app/dashboard/actions"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -19,6 +21,8 @@ const formSchema = z.object({
 })
 
 export default function CreationForm() {
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,6 +44,14 @@ export default function CreationForm() {
     setEntries([...entries, { type: types[0].id, value: "" }])
   }
 
+  const onRemove = (index: number) => {
+    setEntries((prev) => {
+      const newEntries = [...prev]
+      newEntries.splice(index, 1)
+      return newEntries
+    })
+  }
+
   const onChange = (index: number, value: string) => {
     setEntries((prev) => {
       const newEntries = [...prev]
@@ -59,9 +71,17 @@ export default function CreationForm() {
   }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
-    console.log(entries)
-    createItem(values.name, values.url, entries)
+    if (entries.length === 0) {
+      return toast.error("Es muss mindestens ein Eintrag vorhanden sein.")
+    }
+
+    const res = await createItem(values.name, values.url, entries)
+    if (res.state) {
+      toast.success(res.msg)
+      router.refresh()
+    } else {
+      toast.error(res.msg)
+    }
   }
 
   const onFocus = (e: FocusEvent<HTMLInputElement>) => {
@@ -116,7 +136,7 @@ export default function CreationForm() {
           <h2 className={"text-md my-2 font-[600]"}>Einträge</h2>
           {entries.length == 0 && <p className={"text-sm text-gray-500"}>Keine Einträge vorhanden.</p>}
           {entries.map((entry, index) => (
-            <CreationFormEntry
+            <Entry
               key={`entry-${index}`}
               index={index}
               entry={entry}
@@ -125,6 +145,7 @@ export default function CreationForm() {
               onBlur={onBlur}
               onTypeChange={onTypeChange}
               onValueChange={onChange}
+              onRemove={() => onRemove(index)}
             />
           ))}
 
@@ -146,7 +167,7 @@ export default function CreationForm() {
           </TooltipProvider>
         </div>
 
-        <Button className="mt-2 w-full">Bestätigen</Button>
+        <Button className="w-full">Bestätigen</Button>
       </form>
     </Form>
   )

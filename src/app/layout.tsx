@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/Providers"
-import ThemeSwitcher from "@/components/ThemeSwitcher"
 import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -18,7 +17,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" suppressHydrationWarning={true}>
+    <html
+      lang="de"
+      suppressHydrationWarning={true}
+    >
       <body className={inter.className}>
         <Providers
           attribute="class"
@@ -28,7 +30,6 @@ export default function RootLayout({
         >
           {children}
 
-          {/* <ThemeSwitcher /> */}
           <Toaster position="top-right" />
         </Providers>
       </body>

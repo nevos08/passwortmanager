@@ -1,3 +1,4 @@
+import { DefaultArgs } from "@prisma/client/runtime/library"
 import { DefaultSession, DefaultUser } from "next-auth"
 import { JWT, DefaultJWT } from "next-auth/jwt"
 
@@ -9,7 +10,7 @@ declare module "next-auth" {
       role: string
       firstName: string
       lastName: string
-    } & DefaultUser
+    } & Defaultuser
   }
 
   interface User extends DefaultUser {
@@ -21,6 +22,7 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
+    id: string
     firstName: string
     lastName: string
     role: string
