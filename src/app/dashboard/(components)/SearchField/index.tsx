@@ -1,26 +1,34 @@
 "use client"
 
-import { FormEvent } from "react"
-import { useDebouncedState } from "@mantine/hooks"
 import { Input } from "@/components/ui/input"
 import { FaSearch } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
+import { usePathname, useRouter } from "next/navigation"
 
 export default function SearchField() {
-  const [search, setSearch] = useDebouncedState("", 500)
+  const pathname = usePathname()
+  const { replace } = useRouter()
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const search = (formData: FormData) => {
+    const searchValue = formData.get("searchValue") as string
+    if (searchValue.length === 0) {
+      replace(pathname)
+      return
+    }
+
+    const searchParams = new URLSearchParams()
+    searchParams.set("search", searchValue)
+
+    replace(`${pathname}?${searchParams.toString()}`)
   }
 
   return (
     <form
-      onSubmit={onSubmit}
+      action={search}
       className="flex items-center gap-2"
     >
       <Input
-        defaultValue={search}
-        onChange={(e) => setSearch(e.currentTarget.value)}
+        name="searchValue"
         placeholder="Suche..."
         className="bg-secondary dark:bg-background"
       />

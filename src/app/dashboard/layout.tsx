@@ -1,10 +1,10 @@
 import { getServerSession } from "next-auth"
 import LogoutButton from "@/components/LogoutButton"
 import { authOptions } from "../api/auth/[...nextauth]/options"
-// import ThemeSwitcher from "@/components/ThemeSwitcher"
 import { IoMdSettings } from "react-icons/io"
 import { Button } from "@/components/ui/button"
 import dynamic from "next/dynamic"
+import Link from "next/link"
 
 const ThemeSwitcher = dynamic(() => import("@/components/ThemeSwitcher"), { ssr: false })
 
@@ -19,8 +19,16 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
           <div className="flex items-center gap-4">
             <p className="font-bold">{session?.user.firstName + " " + session?.user.lastName}</p>
-            <Button size="icon">
-              <IoMdSettings className="text-2xl" />
+            <Button asChild>
+              <Link href="/dashboard">Startseite</Link>
+            </Button>
+            <Button
+              size="icon"
+              variant="outline"
+            >
+              <Link href="/dashboard/settings">
+                <IoMdSettings className="text-2xl" />
+              </Link>
             </Button>
             <LogoutButton />
             <ThemeSwitcher />

@@ -6,7 +6,7 @@ import { Button } from "../ui/button"
 export default function LogoutButton() {
   return (
     <Button
-      variant="outline"
+      variant="destructive"
       onClick={() => signOut()}
     >
       Abmelden

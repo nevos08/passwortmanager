@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { FaTrash } from "react-icons/fa6"
-import { deleteItem } from "./actions"
+import { deleteItem } from "@/app/dashboard/actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
@@ -13,6 +13,7 @@ type DeleteButtonProps = {
 
 export default function DeleteButton({ id }: DeleteButtonProps) {
   const router = useRouter()
+
   const onDelete = () => {
     deleteItem(id).then((res) => {
       if (res.state) {

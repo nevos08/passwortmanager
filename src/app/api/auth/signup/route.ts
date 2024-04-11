@@ -8,14 +8,14 @@ export async function POST(req: Request) {
     const { firstName, lastName, email, password } = await req.json()
 
     const salt = await bcrypt.genSalt(10)
-    const hasedPassword = await bcrypt.hash(password, salt)
+    const hashedPassword = await bcrypt.hash(password, salt)
 
     const user = await prisma.user.create({
       data: {
         firstName,
         lastName,
         email,
-        password: hasedPassword,
+        password: hashedPassword,
       },
     })
 

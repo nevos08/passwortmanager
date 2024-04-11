@@ -1,7 +1,18 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { FaCopy } from "react-icons/fa6"
 import DeleteButton from "./DeleteButton"
+import { toast } from "sonner"
 
 type ItemDialogProps = {
   item: {
@@ -57,6 +68,10 @@ export default function ItemDialog({ item }: ItemDialogProps) {
               <Button
                 size="icon"
                 variant="ghost"
+                onClick={() => {
+                  toast.info("Wert in Zwischenablage kopiert")
+                  navigator.clipboard.writeText(item.url as string)
+                }}
               >
                 <FaCopy className="text-xl" />
               </Button>
@@ -66,17 +81,22 @@ export default function ItemDialog({ item }: ItemDialogProps) {
 
         <div className="mt-2">
           <h2 className="text-lg font-bold">Einträge</h2>
+
           {item.itemEntries.map((entry) => (
             <div
               key={entry.id}
               className="mt-2 flex items-center justify-between gap-2 rounded-md border bg-secondary px-4 py-2 dark:bg-background"
             >
-              <p>{entry.itemType.description}</p>
+              <p className="font-bold">{entry.itemType.description}:</p>
               <div className="flex items-center gap-2">
                 <p>{entry.value}</p>
                 <Button
                   size="icon"
                   variant="ghost"
+                  onClick={() => {
+                    toast.info("Wert in Zwischenablage kopiert")
+                    navigator.clipboard.writeText(entry.value)
+                  }}
                 >
                   <FaCopy className="text-xl" />
                 </Button>
@@ -85,7 +105,9 @@ export default function ItemDialog({ item }: ItemDialogProps) {
           ))}
         </div>
         <DialogFooter>
-          <DeleteButton id={item.id} />
+          <DialogClose asChild>
+            <DeleteButton id={item.id} />
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

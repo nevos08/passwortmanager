@@ -1,3 +1,5 @@
+"use client"
+
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { useState } from "react"
@@ -5,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { FaCheck, FaCopy } from "react-icons/fa6"
 import { toast } from "sonner"
+import { PopoverClose } from "@radix-ui/react-popover"
 
 type GeneratePasswordPopoverProps = {
   onValueChange: (value: string) => void
@@ -120,14 +123,16 @@ export default function GeneratePasswordPopover({ onValueChange }: GeneratePassw
           <TooltipProvider delayDuration={200}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  size={"icon"}
-                  variant={"ghost"}
-                  className={"shrink-0"}
-                  onClick={onSubmit}
-                >
-                  <FaCheck className={"text-xl"} />
-                </Button>
+                <PopoverClose asChild>
+                  <Button
+                    size={"icon"}
+                    variant={"ghost"}
+                    className={"shrink-0"}
+                    onClick={onSubmit}
+                  >
+                    <FaCheck className={"text-xl"} />
+                  </Button>
+                </PopoverClose>
               </TooltipTrigger>
               <TooltipContent>Passwort verwenden</TooltipContent>
             </Tooltip>

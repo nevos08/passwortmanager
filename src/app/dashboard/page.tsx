@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]/options"
 import ItemDialog from "./(components)/ItemDialog"
+import { cn } from "@/lib/utils"
 
 export const dynamic = "force-dynamic"
 
@@ -25,8 +26,14 @@ async function getEntries() {
   })
 }
 
-export default async function Dashboard() {
+export default async function Dashboard({ searchParams }: { searchParams: { search?: string } }) {
   const items = await getEntries()
+
+  const filteredItems = items.filter((item) => {
+    if (!searchParams.search) return true
+    if (item.name.toLowerCase().includes(searchParams.search.toLowerCase())) return true
+  })
+
   return (
     <>
       <div className="flex justify-between">
@@ -45,8 +52,14 @@ export default async function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-3 gap-2">
-        {items.map((item) => (
+      {items.length === 0 && (
+        <div className="mt-4 w-full rounded-md bg-secondary p-4 text-center">
+          Du hast noch keine Passwörter angelegt.
+        </div>
+      )}
+
+      <div className={cn("grid grid-cols-3 gap-2", items.length > 0 && "mt-2")}>
+        {filteredItems.map((item) => (
           <ItemDialog
             key={item.id}
             item={item}

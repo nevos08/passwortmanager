@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter as FontSans } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/Providers"
 import { Toaster } from "@/components/ui/sonner"
+import { cn } from "@/lib/utils"
 
-const inter = Inter({ subsets: ["latin"] })
+const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" })
 
 export const metadata: Metadata = {
   title: "Passwort-Manager",
@@ -21,7 +22,7 @@ export default function RootLayout({
       lang="de"
       suppressHydrationWarning={true}
     >
-      <body className={inter.className}>
+      <body className={cn("font-sans antialiased", fontSans.variable)}>
         <Providers
           attribute="class"
           defaultTheme="system"

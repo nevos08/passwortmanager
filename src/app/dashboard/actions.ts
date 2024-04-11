@@ -33,3 +33,30 @@ export async function createItem(name: string, url: string, entries: Array<{ typ
     return { state: false, msg: "Ein Fehler ist aufgetreten." }
   }
 }
+
+export async function deleteItem(id: number) {
+  const session = await getServerSession(authOptions)
+  if (!session || !session.user) return { state: false, msg: "Du bist nicht angemeldet!" }
+
+  try {
+    const deleteEntries = prisma.itemEntry.deleteMany({
+      where: {
+        itemId: id,
+      },
+    })
+
+    const deleteItem = prisma.item.delete({
+      where: {
+        id: id,
+        userId: parseInt(session.user.id),
+      },
+    })
+
+    const transaction = await prisma.$transaction([deleteEntries, deleteItem])
+
+    return { state: true, msg: "Item erfolgreich gelöscht!" }
+  } catch (e) {
+    console.log(e)
+    return { state: false, msg: "Fehler beim Löschen des Items!" }
+  }
+}
