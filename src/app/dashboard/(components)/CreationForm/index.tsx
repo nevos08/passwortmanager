@@ -14,6 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { createItem } from "@/app/dashboard/actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { DialogClose } from "@/components/ui/dialog"
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -167,7 +168,9 @@ export default function CreationForm() {
           </TooltipProvider>
         </div>
 
-        <Button className="w-full">Bestätigen</Button>
+        <DialogClose asChild>
+          <Button className="w-full">Bestätigen</Button>
+        </DialogClose>
       </form>
     </Form>
   )
