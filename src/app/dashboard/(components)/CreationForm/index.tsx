@@ -168,7 +168,10 @@ export default function CreationForm() {
           </TooltipProvider>
         </div>
 
-        <DialogClose asChild>
+        <DialogClose
+          asChild
+          type="submit"
+        >
           <Button className="w-full">Bestätigen</Button>
         </DialogClose>
       </form>
