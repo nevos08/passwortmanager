@@ -5,7 +5,7 @@ Gruppenprojekt für das Modul SWEP
 ## Requirements
 
 - MariaDB Database
-- Node.js (npm)
+- Node.js >= 18 (npm)
 
 ## Installation
 
